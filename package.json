@@ -32,6 +32,13 @@
   "activationEvents": [],
   "main": "",
   "contributes": {
+    "themes": [
+      {
+        "label": "Delphi Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/delphi-dark-color-theme.json"
+      }
+    ],
     "languages": [
       {
         "id": "delphi",

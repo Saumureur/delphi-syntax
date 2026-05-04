@@ -1,0 +1,115 @@
+{
+  "name": "Delphi Dark",
+  "$schema": "vscode://schemas/color-theme",
+  "type": "dark",
+  "tokenColors": [
+    {
+      "name": "Comments",
+      "scope": ["comment.line", "comment.block"],
+      "settings": {
+        "foreground": "#57C97D",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "name": "Directives conditionnelles",
+      "scope": ["keyword.preprocessor.conditional.delphi", "meta.preprocessor.conditional.delphi"],
+      "settings": { "foreground": "#C678DD" }
+    },
+    {
+      "name": "Directives paramétriques",
+      "scope": "keyword.preprocessor.parameter.delphi",
+      "settings": { "foreground": "#E5C07B" }
+    },
+    {
+      "name": "Directives switch",
+      "scope": "keyword.preprocessor.switch.delphi",
+      "settings": { "foreground": "#D19A66" }
+    },
+    {
+      "name": "Strings",
+      "scope": ["string.quoted.single.delphi", "constant.character.delphi"],
+      "settings": { "foreground": "#98C379" }
+    },
+    {
+      "name": "Numbers",
+      "scope": ["constant.numeric"],
+      "settings": { "foreground": "#D19A66" }
+    },
+    {
+      "name": "Constants (True, False, nil)",
+      "scope": ["constant.language.boolean.delphi", "constant.language.nil.delphi", "constant.language.delphi"],
+      "settings": { "foreground": "#56B6C2", "fontStyle": "bold" }
+    },
+    {
+      "name": "Keywords control (if, while, for...)",
+      "scope": "keyword.control.delphi",
+      "settings": { "foreground": "#C678DD" }
+    },
+    {
+      "name": "Keywords declaration (procedure, function, var...)",
+      "scope": "keyword.other.declaration.delphi",
+      "settings": { "foreground": "#61AFEF" }
+    },
+    {
+      "name": "Keywords structure (class, record...)",
+      "scope": ["keyword.other.structure.delphi", "keyword.other.visibility.delphi"],
+      "settings": { "foreground": "#E06C75" }
+    },
+    {
+      "name": "Modifiers (virtual, override...)",
+      "scope": ["keyword.other.modifier.delphi", "keyword.other.calling-convention.delphi"],
+      "settings": { "foreground": "#ABB2BF", "fontStyle": "italic" }
+    },
+    {
+      "name": "Types (Integer, String, Boolean...)",
+      "scope": ["storage.type.integer.delphi", "storage.type.float.delphi", "storage.type.boolean.delphi", "storage.type.string.delphi", "storage.type.variant.delphi", "storage.type.pointer.delphi", "storage.type.object.delphi", "storage.type.other.delphi"],
+      "settings": { "foreground": "#4EC9B0" }
+    },
+    {
+      "name": "Hint modifiers (deprecated, platform...)",
+      "scope": "storage.modifier.hint.delphi",
+      "settings": { "foreground": "#E5C07B", "fontStyle": "italic" }
+    },
+    {
+      "name": "Built-in functions",
+      "scope": "support.function.builtin.delphi",
+      "settings": { "foreground": "#DCDCAA" }
+    },
+    {
+      "name": "Special identifiers (Self, Result)",
+      "scope": "variable.language.delphi",
+      "settings": { "foreground": "#E5C07B", "fontStyle": "bold" }
+    },
+    {
+      "name": "Operators",
+      "scope": ["keyword.operator.comparison.delphi", "keyword.operator.assignment.delphi", "keyword.operator.arithmetic.delphi", "keyword.operator.logical.delphi"],
+      "settings": { "foreground": "#56B6C2" }
+    },
+    {
+      "name": "ASM registers",
+      "scope": "variable.language.register.delphi",
+      "settings": { "foreground": "#E06C75", "fontStyle": "bold" }
+    },
+    {
+      "name": "ASM mnemonics",
+      "scope": "keyword.other.mnemonic.delphi",
+      "settings": { "foreground": "#61AFEF" }
+    },
+    {
+      "name": "ASM size specifiers",
+      "scope": "storage.modifier.asm.size.delphi",
+      "settings": { "foreground": "#D19A66" }
+    },
+    {
+      "name": "Attributes",
+      "scope": "entity.other.attribute-name.delphi",
+      "settings": { "foreground": "#E5C07B" }
+    },
+    {
+      "name": "Punctuation",
+      "scope": ["punctuation.terminator.statement.delphi", "punctuation.separator.delphi", "punctuation.section.parens", "punctuation.section.brackets"],
+      "settings": { "foreground": "#ABB2BF" }
+    }
+  ]
+}
