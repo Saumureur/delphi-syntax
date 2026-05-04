@@ -1,0 +1,406 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Delphi",
+  "scopeName": "source.delphi",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#directives" },
+    { "include": "#attributes" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#constants" },
+    { "include": "#keywords" },
+    { "include": "#modifiers" },
+    { "include": "#types" },
+    { "include": "#builtins" },
+    { "include": "#special_identifiers" },
+    { "include": "#operators" },
+    { "include": "#punctuation" },
+    { "include": "#asm_block" }
+  ],
+  "repository": {
+
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.delphi",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.braces.delphi",
+          "begin": "\\{(?!\\$)",
+          "end": "\\}",
+          "patterns": [
+            { "include": "#comments" }
+          ]
+        },
+        {
+          "name": "comment.block.parentheses.delphi",
+          "begin": "\\(\\*(?!\\$)",
+          "end": "\\*\\)",
+          "patterns": [
+            { "include": "#comments" }
+          ]
+        }
+      ]
+    },
+
+    "directives": {
+      "patterns": [
+        {
+          "comment": "Conditional compilation directives with parameters",
+          "name": "meta.preprocessor.conditional.delphi",
+          "match": "(?i)(\\{\\$|\\(\\*\\$)(IFDEF|IFNDEF|IF|ELSEIF|ELSE|ENDIF|IFEND|IFOPT|DEFINE|UNDEF)\\b(.*?)(\\}|\\*\\))",
+          "captures": {
+            "1": { "name": "punctuation.definition.directive.delphi" },
+            "2": { "name": "keyword.preprocessor.conditional.delphi" },
+            "3": { "name": "variable.other.preprocessor.delphi" },
+            "4": { "name": "punctuation.definition.directive.delphi" }
+          }
+        },
+        {
+          "comment": "Parameter directives: $I file.inc, $R resource.res, $L obj, etc.",
+          "name": "meta.preprocessor.parameter.delphi",
+          "match": "(?i)(\\{\\$|\\(\\*\\$)(I|INCLUDE|R|RESOURCE|L|LINK|M|MEMORY|APPTYPE|WEAKPACKAGEUNIT|IMPLICITBUILD|REQUIRES|CONTAINS)\\b(.*?)(\\}|\\*\\))",
+          "captures": {
+            "1": { "name": "punctuation.definition.directive.delphi" },
+            "2": { "name": "keyword.preprocessor.parameter.delphi" },
+            "3": { "name": "string.unquoted.directive.delphi" },
+            "4": { "name": "punctuation.definition.directive.delphi" }
+          }
+        },
+        {
+          "comment": "Switch directives: $O+, $R-, $ALIGN ON, etc.",
+          "name": "meta.preprocessor.switch.delphi",
+          "match": "(?i)(\\{\\$|\\(\\*\\$)(A|ALIGN|B|BOOLEVAL|C|ASSERTIONS|D|DEBUGINFO|E|VARSTRINGCHECKS|F|TYPEDADDRESS|G|IMPORTEDDATA|H|LONGSTRINGS|I|IOCHECKS|J|WRITEABLECONST|K|LOCALSYMBOLS|L|LOCALSYMBOLS|M|TYPEINFO|N|NATIVEWCHAR|O|OPTIMIZATION|P|OPENSTRINGS|Q|OVERFLOWCHECKS|R|RANGECHECKS|S|STACKOVERFLOW|T|TYPEDADDRESS|U|SAFEDIVIDE|V|VARSTRINGCHECKS|W|STACKFRAMES|X|EXTENDEDSYNTAX|Y|REFERENCEINFO|Z|MINENUMSIZE|HINTS|WARNINGS|WARN|RTTI|OBJEXPORTALL|EXCESSPRECISION|METHODINFO|OLDTYPELAYOUT|POINTERMATH|STRONGLINKTYPES|ZEROBASEDSTRINGS)(\\s*[+\\-]|\\s+(?:ON|OFF|DEFAULT|ERROR|WARN|IGNORE|ALL))?(\\s.*?)?(\\}|\\*\\))",
+          "captures": {
+            "1": { "name": "punctuation.definition.directive.delphi" },
+            "2": { "name": "keyword.preprocessor.switch.delphi" },
+            "3": { "name": "constant.language.boolean.delphi" },
+            "4": { "name": "string.unquoted.directive.delphi" },
+            "5": { "name": "punctuation.definition.directive.delphi" }
+          }
+        },
+        {
+          "comment": "Fallback for any other {$...} or (*$...*) directive",
+          "name": "keyword.other.preprocessor.delphi",
+          "match": "(?i)\\{\\$[^}]*\\}|\\(\\*\\$.*?\\*\\)"
+        }
+      ]
+    },
+
+    "attributes": {
+      "comment": "RTTI attributes / custom attributes: [SomeAttribute] or [assembly: SomeAttribute]",
+      "name": "meta.attribute.delphi",
+      "begin": "\\[",
+      "end": "\\]",
+      "patterns": [
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        {
+          "name": "entity.other.attribute-name.delphi",
+          "match": "(?i)\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*(,|\\]|\\())"
+        },
+        {
+          "name": "keyword.other.attribute.delphi",
+          "match": "(?i)\\b(assembly|module)\\b"
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "comment": "Single-quoted string, handles '' escape",
+          "name": "string.quoted.single.delphi",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.delphi",
+              "match": "''"
+            }
+          ]
+        },
+        {
+          "comment": "Character literal: #65 or #$41",
+          "name": "constant.character.delphi",
+          "match": "#(?:\\$[0-9a-fA-F]+|[0-9]+)"
+        },
+        {
+          "comment": "Escaped identifier with &: &begin, &type, etc.",
+          "name": "variable.other.escaped-identifier.delphi",
+          "match": "&[A-Za-z_][A-Za-z0-9_]*"
+        }
+      ]
+    },
+
+    "numbers": {
+      "patterns": [
+        {
+          "comment": "Hexadecimal integer: $FF, $0A1B",
+          "name": "constant.numeric.hex.delphi",
+          "match": "\\$[0-9a-fA-F]+"
+        },
+        {
+          "comment": "Binary integer (Free Pascal extension): %1010",
+          "name": "constant.numeric.binary.delphi",
+          "match": "%[01]+"
+        },
+        {
+          "comment": "Octal integer (Free Pascal extension): &17",
+          "name": "constant.numeric.octal.delphi",
+          "match": "(?<![A-Za-z_])&[0-7]+"
+        },
+        {
+          "comment": "Floating point: 1.0, 1.5e-10, 1E2",
+          "name": "constant.numeric.float.delphi",
+          "match": "\\b[0-9]+(?:\\.[0-9]+)?(?:[eE][+\\-]?[0-9]+)?\\b"
+        }
+      ]
+    },
+
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.delphi",
+          "match": "(?i)\\b(True|False)\\b"
+        },
+        {
+          "name": "constant.language.nil.delphi",
+          "match": "(?i)\\bnil\\b"
+        },
+        {
+          "comment": "Common predefined named constants",
+          "name": "constant.language.delphi",
+          "match": "(?i)\\b(MaxInt|MaxLongint|MinInt64|MaxInt64|Pi|Infinity|NegInfinity|NaN|MaxSingle|MinSingle|MaxDouble|MinDouble|MaxExtended|MinExtended|MaxCurrency|MinCurrency)\\b"
+        }
+      ]
+    },
+
+    "keywords": {
+      "patterns": [
+        {
+          "comment": "Control flow",
+          "name": "keyword.control.delphi",
+          "match": "(?i)\\b(if|then|else|while|do|for|to|downto|repeat|until|try|finally|except|raise|with|case|of|begin|end|goto|break|continue|exit|on)\\b"
+        },
+        {
+          "comment": "Declaration keywords",
+          "name": "keyword.other.declaration.delphi",
+          "match": "(?i)\\b(unit|interface|implementation|initialization|finalization|uses|var|const|type|procedure|function|constructor|destructor|property|program|library|package|exports|requires|contains|label|resourcestring|threadvar|dispinterface)\\b"
+        },
+        {
+          "comment": "Visibility and class structure",
+          "name": "keyword.other.visibility.delphi",
+          "match": "(?i)\\b(strict|private|protected|public|published|automated)\\b"
+        },
+        {
+          "comment": "OOP structure keywords",
+          "name": "keyword.other.structure.delphi",
+          "match": "(?i)\\b(class|record|interface|object|helper|array|set|file|packed|inherited|self|result|forward)\\b"
+        },
+        {
+          "comment": "Parameter modifiers",
+          "name": "keyword.other.parameter.delphi",
+          "match": "(?i)\\b(var|const|out|array\\s+of|constref)\\b"
+        },
+        {
+          "comment": "Method/class modifiers",
+          "name": "keyword.other.modifier.delphi",
+          "match": "(?i)\\b(sealed|abstract|virtual|override|overload|reintroduce|inline|static|dynamic|final|message|default|stored|implements|read|write|index|name|nodefault|dispid)\\b"
+        },
+        {
+          "comment": "Calling conventions",
+          "name": "keyword.other.calling-convention.delphi",
+          "match": "(?i)\\b(stdcall|cdecl|pascal|register|safecall|winapi|mwpascal|far|near|far16|export|external|varargs|forward)\\b"
+        },
+        {
+          "comment": "Inline assembler",
+          "name": "keyword.other.asm.delphi",
+          "match": "(?i)\\b(asm)\\b"
+        },
+        {
+          "comment": "Logical and bitwise operators (word form)",
+          "name": "keyword.operator.logical.delphi",
+          "match": "(?i)\\b(and|or|xor|not|is|as|in|shl|shr|div|mod)\\b"
+        }
+      ]
+    },
+
+    "modifiers": {
+      "comment": "Hint directives / platform markers",
+      "name": "storage.modifier.hint.delphi",
+      "match": "(?i)\\b(deprecated|platform|experimental|library|unsafe|weak|volatile|reference|to)\\b"
+    },
+
+    "types": {
+      "patterns": [
+        {
+          "comment": "Integer types",
+          "name": "storage.type.integer.delphi",
+          "match": "(?i)\\b(Integer|Cardinal|ShortInt|SmallInt|LongInt|Int64|UInt64|Byte|Word|LongWord|FixedInt|FixedUInt|NativeInt|NativeUInt|Int8|Int16|Int32|UInt8|UInt16|UInt32|HResult|HRESULT|THandle|TSocket|LONG|DWORD|BOOL|UINT|ULONG|ULONGLONG|LONGLONG)\\b"
+        },
+        {
+          "comment": "Float types",
+          "name": "storage.type.float.delphi",
+          "match": "(?i)\\b(Single|Double|Extended|Currency|Real|Real48|Comp|Decimal)\\b"
+        },
+        {
+          "comment": "Boolean types",
+          "name": "storage.type.boolean.delphi",
+          "match": "(?i)\\b(Boolean|ByteBool|WordBool|LongBool)\\b"
+        },
+        {
+          "comment": "Character and string types",
+          "name": "storage.type.string.delphi",
+          "match": "(?i)\\b(Char|AnsiChar|WideChar|UTF8Char|String|AnsiString|UnicodeString|ShortString|WideString|RawByteString|UTF8String|UCS2String|UCS4String|PChar|PAnsiChar|PWideChar|PUTF8Char|PString|PShortString|PAnsiString|PWideString|PUnicodeString)\\b"
+        },
+        {
+          "comment": "Special / variant types",
+          "name": "storage.type.variant.delphi",
+          "match": "(?i)\\b(Variant|OleVariant|TVarData|TVarRec)\\b"
+        },
+        {
+          "comment": "Pointer types",
+          "name": "storage.type.pointer.delphi",
+          "match": "(?i)\\b(Pointer|PPointer|PByte|PWord|PCardinal|PInteger|PInt64|PUInt64|PNativeInt|PNativeUInt|PSingle|PDouble|PExtended|PCurrency|PBoolean|PChar|PVariant|PWordArray|PByteArray|PSmallInt|PLongInt|PLongWord|PShortInt)\\b"
+        },
+        {
+          "comment": "Base object and GUID types",
+          "name": "storage.type.object.delphi",
+          "match": "(?i)\\b(TObject|TClass|IInterface|IUnknown|IDispatch|TInterfacedObject|TGUID|PGUID|TDate|TTime|TDateTime|TTimeStamp|IID_IUnknown|DIID_IDispatch)\\b"
+        },
+        {
+          "comment": "Special / void",
+          "name": "storage.type.other.delphi",
+          "match": "(?i)\\b(IInterface|IUnknown|IDispatch|Exception|TException|EException|EAbort|EInOutError|EIntError|EDivByZero|ERangeError|EIntOverflow|EMathError|EInvalidOp|EZeroDivide|EOverflow|EUnderflow|EAccessViolation|EPrivilege|EStackOverflow|EControlC|EExternalException|EHeapException|EOutOfMemory|EInvalidPointer|EInvalidCast|EConvertError|EVariantError|EProgrammerNotFound|ENoConstructException|EAbstractError|EAssertionFailed|ESafeCallException|EMonitor|ENoMonitorSupportError|EObjectDisposed|EArgumentException|EArgumentNilException|EArgumentOutOfRangeException|EInvalidOperationException|ENotSupportedException|ENotImplementedException|EPathNotFoundException|EFileNotFoundException|EDirectoryNotFoundException|EPathTooLongException|EInsufficientMemoryException|EOutOfMemoryException|EStackOverflowException|EArithmeticException|EOverflowException|EUnderflowException|EDivByZeroException)\\b"
+        }
+      ]
+    },
+
+    "builtins": {
+      "comment": "Built-in functions, procedures, and system identifiers",
+      "name": "support.function.builtin.delphi",
+      "match": "(?i)\\b(Abs|Addr|Append|Arctan|Assign|AssignFile|Assigned|BlockRead|BlockWrite|Break|Chr|Close|CloseFile|Concat|Continue|Copy|Dec|Delete|Dispose|Eof|Eoln|Erase|Exclude|Exit|Exp|FilePos|FileSize|Fillchar|Finalize|FindFirst|FindNext|FindClose|Flush|FreeAndNil|FreeMem|GetMem|GetDir|Halt|Hi|High|Inc|Include|Initialize|Insert|IOResult|Length|Ln|Lo|Low|Mark|Move|MoveMemory|New|Odd|Ord|Pack|ParamCount|ParamStr|Pi|Pos|Pred|Ptr|Random|Randomize|Read|Readln|ReallocMem|Release|Rename|Reset|Rewrite|Round|RunError|Seek|SeekEof|SeekEoln|SetLength|SetString|Sin|SizeOf|Sqr|Sqrt|Str|Succ|Swap|Trunc|Truncate|TypeOf|UniqueString|Unpack|UpCase|Val|VarArrayCreate|VarArrayDimCount|VarArrayHighBound|VarArrayLowBound|VarArrayOf|VarArrayRedim|VarArrayRef|VarClear|VarCopy|VarIsEmpty|VarIsNull|VarIsNumeric|VarIsStr|VarToStr|VarToStrDef|VarType|Write|Writeln|ZeroMemory|FillMemory|CopyMemory|InterlockedIncrement|InterlockedDecrement|InterlockedExchange|InterlockedCompareExchange|GetTickCount|Sleep|System|Default|Finalize|Initialize|SizeOf|TypeInfo|PTypeInfo|GetTypeData|IsClass|IsInterface|IsObject)\\b"
+    },
+
+    "special_identifiers": {
+      "patterns": [
+        {
+          "comment": "Self and Result are special pseudo-variables",
+          "name": "variable.language.delphi",
+          "match": "(?i)\\b(Self|Result|inherited)\\b"
+        },
+        {
+          "comment": "@ (address-of) operator applied to identifier",
+          "name": "keyword.operator.address.delphi",
+          "match": "@"
+        },
+        {
+          "comment": "Pointer dereference",
+          "name": "keyword.operator.dereference.delphi",
+          "match": "\\^(?=[A-Za-z_\\(])"
+        }
+      ]
+    },
+
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.delphi",
+          "match": "<>|<=|>=|<|>|="
+        },
+        {
+          "name": "keyword.operator.assignment.delphi",
+          "match": ":="
+        },
+        {
+          "name": "keyword.operator.arithmetic.delphi",
+          "match": "\\+|\\-|\\*|/"
+        },
+        {
+          "comment": "Type cast / pointer-type separator",
+          "name": "keyword.operator.type.delphi",
+          "match": "\\^"
+        },
+        {
+          "comment": "Range operator",
+          "name": "keyword.operator.range.delphi",
+          "match": "\\.\\."
+        }
+      ]
+    },
+
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.statement.delphi",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.accessor.delphi",
+          "match": "\\."
+        },
+        {
+          "name": "punctuation.separator.delphi",
+          "match": ","
+        },
+        {
+          "name": "punctuation.separator.type-annotation.delphi",
+          "match": ":"
+        },
+        {
+          "name": "punctuation.section.parens.begin.delphi",
+          "match": "\\("
+        },
+        {
+          "name": "punctuation.section.parens.end.delphi",
+          "match": "\\)"
+        },
+        {
+          "name": "punctuation.section.brackets.begin.delphi",
+          "match": "\\["
+        },
+        {
+          "name": "punctuation.section.brackets.end.delphi",
+          "match": "\\]"
+        }
+      ]
+    },
+
+    "asm_block": {
+      "comment": "Inline assembler block",
+      "name": "meta.embedded.assembly.delphi",
+      "begin": "(?i)\\basm\\b",
+      "end": "(?i)\\bend\\b",
+      "beginCaptures": {
+        "0": { "name": "keyword.other.asm.delphi" }
+      },
+      "endCaptures": {
+        "0": { "name": "keyword.control.delphi" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        {
+          "comment": "x86/x64 registers",
+          "name": "variable.language.register.delphi",
+          "match": "(?i)\\b(EAX|EBX|ECX|EDX|ESI|EDI|ESP|EBP|EIP|RAX|RBX|RCX|RDX|RSI|RDI|RSP|RBP|RIP|R8|R9|R10|R11|R12|R13|R14|R15|AX|BX|CX|DX|SI|DI|SP|BP|AL|BL|CL|DL|AH|BH|CH|DH|CS|DS|ES|FS|GS|SS|ST0|ST1|ST2|ST3|ST4|ST5|ST6|ST7|XMM0|XMM1|XMM2|XMM3|XMM4|XMM5|XMM6|XMM7|YMM0|YMM1|YMM2|YMM3|YMM4|YMM5|YMM6|YMM7)\\b"
+        },
+        {
+          "comment": "Common x86 mnemonics",
+          "name": "keyword.other.mnemonic.delphi",
+          "match": "(?i)\\b(MOV|MOVSX|MOVZX|MOVSS|MOVSD|PUSH|POP|PUSHA|POPA|PUSHAD|POPAD|ADD|SUB|MUL|IMUL|DIV|IDIV|INC|DEC|NEG|AND|OR|XOR|NOT|SHL|SHR|SAL|SAR|ROL|ROR|RCL|RCR|CMP|TEST|JMP|JE|JNE|JZ|JNZ|JG|JGE|JL|JLE|JA|JAE|JB|JBE|JS|JNS|JO|JNO|JP|JNP|CALL|RET|RETN|NOP|HLT|INT|IRET|LEA|XCHG|BSWAP|XADD|CMPXCHG|LOCK|REP|REPE|REPZ|REPNE|REPNZ|MOVS|LODS|STOS|CMPS|SCAS|MOVSD|FILD|FIST|FISTP|FLD|FST|FSTP|FADD|FSUB|FMUL|FDIV|FADDP|FSUBP|FMULP|FDIVP|FSQRT|FSIN|FCOS|FPTAN|FPATAN|FXCH|FINIT|FLDZ|FLD1|FLDPI)\\b"
+        },
+        {
+          "comment": "ASM size specifiers",
+          "name": "storage.modifier.asm.size.delphi",
+          "match": "(?i)\\b(BYTE|WORD|DWORD|QWORD|TBYTE|XMMWORD|YMMWORD|PTR)\\b"
+        }
+      ]
+    }
+
+  }
+}

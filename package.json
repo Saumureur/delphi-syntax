@@ -1,0 +1,88 @@
+{
+  "name": "delphi-syntax",
+  "displayName": "Delphi Syntax Highlight",
+  "description": "Coloration syntaxique complète pour Delphi / Object Pascal (RAD Studio Sydney, Free Pascal, Lazarus) — mots-clés, types, directives {$}, ASM inline, attributs RTTI.",
+  "version": "1.1.0",
+  "publisher": "votre-publisher-id",
+  "icon": "images/icon.png",
+  "license": "MIT",
+  "homepage": "https://github.com/votre-compte/delphi-syntax",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/votre-compte/delphi-syntax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/votre-compte/delphi-syntax/issues"
+  },
+  "keywords": [
+    "delphi",
+    "pascal",
+    "object pascal",
+    "free pascal",
+    "lazarus",
+    "syntax highlight",
+    "rad studio"
+  ],
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [],
+  "main": "",
+  "contributes": {
+    "languages": [
+      {
+        "id": "delphi",
+        "aliases": [
+          "Delphi",
+          "Object Pascal",
+          "delphi",
+          "pascal"
+        ],
+        "extensions": [
+          ".pas",
+          ".dpr",
+          ".dpk",
+          ".inc",
+          ".pp",
+          ".lpr"
+        ],
+        "filenames": [],
+        "firstLine": "^(unit|program|library|package)\\s+[A-Za-z_]",
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/delphi-light.png",
+          "dark": "./images/delphi-dark.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "delphi",
+        "scopeName": "source.delphi",
+        "path": "./syntaxes/delphi.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "delphi",
+        "path": "./snippets/delphi.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[delphi]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false,
+        "editor.wordSeparators": "`~!@#%^&*()-=+[{]}\\|;:'\",.<>/?",
+        "editor.rulers": [
+          80,
+          120
+        ],
+        "editor.suggest.insertMode": "replace"
+      }
+    }
+  }
+}
